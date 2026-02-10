@@ -1,1 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Teddy Day 🧸❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    height:100vh;
+    font-family:'Poppins',sans-serif;
+    overflow:hidden;
+    color:#fff;
+}
+
+/* 🎥 BACKGROUND VIDEO */
+.bg-video{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:0;
+}
+@media(max-width:768px){
+    .bg-video{object-fit:contain;background:#000;}
+}
+
+/* 🌑 VIDEO OVERLAY */
+.video-overlay{
+    position:fixed;
+    inset:0;
+    background:transparent;
+    z-index:1;
+}
+
+/* 💕 FLOATING HEARTS */
+.hearts{position:fixed;inset:0;pointer-events:none;z-index:2;}
+.heart{position:absolute;bottom:-10px;animation:floatUp linear forwards;}
+@keyframes floatUp{
+    from{transform:translateY(0) scale(1);opacity:1;}
+    to{transform:translateY(-120vh) scale(1.4);opacity:0;}
+}
+
+/* 💎 MAIN CARD */
+.container{
+    max-width:660px;
+    width:95%;
+    padding:40px;
+    text-align:center;
+    background:rgba(255,255,255,0.00);
+    backdrop-filter:blur(10px);
+    border-radius:34px;
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 0 30px rgba(255,160,180,.35),0 0 80px rgba(255,200,210,.25);
+    position:relative;
+    z-index:3;
+    margin:auto;
+    top:50%;
+    transform:translateY(-50%);
+}
+
+/* TITLE */
+h1{font-family:'Playfair Display',serif;font-size:40px;}
+#name{color:#ffd6e0;animation:heartbeat 2s infinite;}
+@keyframes heartbeat{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.1);}
+}
+.quote{font-style:italic;margin:14px 0;opacity:.9;}
+
+/* TEDDY */
+.big-teddy{font-size:90px;animation:float 3s ease-in-out infinite;}
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+}
+
+.message{font-size:16px;line-height:1.7;margin-top:16px;}
+
+/* BUTTON */
+.btn{
+    margin-top:22px;
+    padding:15px 42px;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(135deg,#fff,#ffd6e0);
+    color:#6b2d3e;
+    font-weight:600;
+    font-size:17px;
+    cursor:pointer;
+}
+.btn:hover{transform:scale(1.05);}
+
+/* SIDE CARDS */
+.side-cards{
+    position:fixed;
+    right:28px;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    z-index:4;
+    opacity:0;
+    pointer-events:none;
+}
+.side-cards.show{opacity:1;pointer-events:auto;}
+
+.flip-card{width:220px;height:130px;perspective:1000px;cursor:pointer;}
+.flip-inner{
+    width:100%;height:100%;
+    transform-style:preserve-3d;
+    transition:.7s;
+}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg);}
+.flip-front,.flip-back{
+    position:absolute;inset:0;
+    backface-visibility:hidden;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px;
+    text-align:center;
+    font-size:14px;
+    box-shadow:0 10px 25px rgba(0,0,0,.3);
+    white-space:pre-line;
+}
+.flip-front{background:#ffe08a;color:#5a2d1b;font-weight:600;}
+.flip-back{background:#fff;color:#6b2d3e;transform:rotateY(180deg);}
+
+/* 🎁 SURPRISE POPUP */
+.surprise{
+    position:fixed;
+    inset:0;
+    background:radial-gradient(circle,rgba(255,200,220,.3),rgba(0,0,0,.85));
+    backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999;
+    opacity:0;
+    pointer-events:none;
+    transition:.6s;
+}
+.surprise.show{opacity:1;pointer-events:auto;}
+
+.surprise-card{
+    background:linear-gradient(135deg,#fff,#ffe6ef);
+    color:#6b2d3e;
+    padding:42px;
+    border-radius:34px;
+    text-align:center;
+    max-width:420px;
+    box-shadow:0 0 40px rgba(255,140,180,.9),
+               0 0 90px rgba(255,180,210,.7);
+}
+.surprise-card .teddy{
+    font-size:80px;
+    animation:heartbeat 1.5s infinite;
+}
+.surprise-card button{
+    margin-top:20px;
+    padding:12px 30px;
+    border:none;
+    border-radius:40px;
+    background:#6b2d3e;
+    color:#fff;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎥 VIDEO -->
+<video class="bg-video" autoplay muted loop playsinline>
+  <source src="videos/bgvideo.mp4" type="video/mp4">
+</video>
+<div class="video-overlay"></div>
+
+<div class="hearts"></div>
+
+<div class="container">
+  <div class="big-teddy">🧸</div>
+  <h1>Happy Teddy Day ❤️<br><span id="name"></span></h1>
+  <p class="quote">“A teddy is a hug you can hold forever.”</p>
+  <p class="message" id="typeText"></p>
+  <button class="btn" onclick="showAll()">Open Your Surprise 🎁</button>
+  <div class="signature">— #Forever_Shyushi 💕</div>
+</div>
+
+<!-- SIDE CARDS -->
+<div class="side-cards" id="sideCards">
+  <div class="flip-card" onclick="handleFlip(this,'card1')">
+    <div class="flip-inner">
+      <div class="flip-front">My Comfort 🧸</div>
+      <div class="flip-back">कुछ साथ उस पुराने टेडी जैसे होते हैं... 
+        जो वक्त के साथ और भी 'रूहानी' हो जाते हैं!
+ 
+जैसे तुम...🧸🤍</div>
+    </div>
+  </div>
+
+  <div class="flip-card" onclick="handleFlip(this,'card2')">
+    <div class="flip-inner">
+      <div class="flip-front">My Safe Place 💕</div>
+      <div class="flip-back">अगर मेरी किसी बात से तुम्हें दुख पहुँचा हो,
+तो सच में माफ़ करना…
+क्योंकि तुम मेरे लिए लड़ाई नहीं,
+मेरी ज़िंदगी हो। 🫶</div>
+    </div>
+  </div>
+
+  <div class="flip-card" onclick="handleFlip(this,'card3')">
+    <div class="flip-inner">
+      <div class="flip-front">My Forever Hug 🤍</div>
+      <div class="flip-back">तुम मेरी coffee हो,
+                            मेरी chocolate हो,
+                            मेरी daily dose of happiness हो। ☕🍫💖</div>
+    </div>
+  </div>
+
+  <div class="flip-card" onclick="handleFlip(this,'card4')">
+    <div class="flip-inner">
+      <div class="flip-front">My Cute Teddy ❤️</div>
+      <div class="flip-back">चलो ना, इस Teddy Day पर
+हम अपनी नाराज़गी को एक प्यारी सी मुस्कान में बदल दें…
+क्योंकि मैं आज भी,
+और हमेशा…</div>
+    </div>
+  </div>
+
+  <div class="flip-card" onclick="handleFlip(this,'card5')">
+    <div class="flip-inner">
+      <div class="flip-front">#Shyushi🤍</div>
+      <div class="flip-back">We've already done the hardest part, which was finding each other among millions of people. now let's do the easiest thing,
+         to never lose each other..</div>
+    </div>
+  </div>
+</div>
+
+<!-- 🎁 SURPRISE -->
+<div class="surprise" id="surpriseBox">
+  <div class="surprise-card">
+    <div class="teddy">🧸</div>
+    <h2>I love you💖</h2>
+    <p>You are my favorite feeling, today and always 🤍</p>
+    <button onclick="closeSurprise()">I Feel the Hug 🤍</button>
+  </div>
+</div>
+
+<!-- 🎵 AUDIO -->
+<audio id="bgMusic" src="pic/Ishqa Ve.mp3"></audio>
+<audio id="card1" src="music/Card1.mp3"></audio>
+<audio id="card2" src="music/card2.mp3"></audio>
+<audio id="card3" src="music/card3.mp3"></audio>
+<audio id="card4" src="music/card4.mp3"></audio>
+<audio id="card5" src="music/card5.mp3"></audio>
+
+<script>
+/* NAME */
+document.getElementById("name").innerText="My Buggi";
+
+/* TYPEWRITER */
+const typeText=document.getElementById("typeText");
+const text=`This teddy reminds me of you 🧸
+Soft, warm, and full of love.
+
+Happy Teddy Day ❤️`;
+let i=0;
+(function type(){
+  if(i<text.length){
+    typeText.innerHTML+=text[i]==="\n"?"<br>":text[i];
+    i++;setTimeout(type,40);
+  }
+})();
+
+/* SLIDESHOW + BG MUSIC (unchanged) */
+const imgs=document.querySelectorAll(".memory-frame img");
+const bgMusic=document.getElementById("bgMusic");
+let idx=0,started=false;
+
+document.addEventListener("click",()=>{
+  if(started) return;
+  started=true;
+  bgMusic.volume=0.6;
+  bgMusic.play();
+},{once:true});
+
+/* ✅ ONLY FIX: CARD MUSIC OVERLAP (ORIGINAL LOGIC PRESERVED) */
+const cardAudios={card1,card2,card3,card4,card5};
+let currentCardAudio=null;
+
+function handleFlip(card,id){
+  const audio=cardAudios[id];
+  const flipped=card.classList.contains("flipped");
+
+  if(!flipped){
+    card.classList.add("flipped");
+
+    if(currentCardAudio && currentCardAudio!==audio){
+      currentCardAudio.pause();
+      currentCardAudio.currentTime=0;
+    }
+
+    bgMusic.pause();
+    audio.play();
+    currentCardAudio=audio;
+
+  }else{
+    card.classList.remove("flipped");
+    audio.pause();
+    audio.currentTime=0;
+
+    if(currentCardAudio===audio){
+      currentCardAudio=null;
+    }
+
+    if(!currentCardAudio){
+      bgMusic.play();
+    }
+  }
+}
+
+/* SHOW / CLOSE */
+function showAll(){
+  sideCards.classList.add("show");
+  surpriseBox.classList.add("show");
+}
+function closeSurprise(){
+  surpriseBox.classList.remove("show");
+}
+
+/* FLOATING HEARTS */
+const emojis=['🧸','💖','💕','🤍'];
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=18+Math.random()*22+"px";
+  h.style.animationDuration=5+Math.random()*5+"s";
+  document.querySelector(".hearts").appendChild(h);
+  setTimeout(()=>h.remove(),10000);
+},700);
+</script>
+
+</body>
+</html>
